@@ -40,8 +40,8 @@ class Caverna:
         tunel1=self.html.DIV()
         tunel1.setAttribute("style,height:650; width:33.33%;float:left;")
         self.main<=tunel1
-        tunel2=self.html.DIV()
-        tunel2.SetAttribute("style","height:800;width:33.33%;float: left;)
+        tunel3=self.html.DIV()
+        tunel3.SetAttribute("style","height:800;width:33.33%;float: left;")
         self.main<=tunel2
         return self
 
