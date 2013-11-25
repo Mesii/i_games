@@ -11,10 +11,10 @@ Caverna - Principal
 :Home: `Labase <http://labase.selfip.org/>`__
 :Copyright: 2013, `GPL <http://is.gd/3Udt>`__.
 
-Caverna é um jogo de aventuras em uma caverna.
+Caverna Ã© um jogo de aventuras em uma caverna.
 """
 CAVEX = "https://dl.dropboxusercontent.com/u/1751704/labase/caverna/img/cavernax.jpg"
-CAVEZ = "https://dl.dropboxusercontent.com/u/1751704/labase/caverna/img/cavernax.jpg"
+CAVEZ = "https://dl.dropboxusercontent.com/u/1751704/labase/caverna/img/cavernaz.jpg"
 
 
 class Caverna
@@ -30,7 +30,7 @@ class Caverna
         self.main = self.doc['main']
 
 
-    def cria_caverna(self):tunel
+    def cria_caverna(self):
         """Cria a caverna e suas partes."""
         self.camara=Camara(self.html,"Camara0").cria_caverna
         #criando um tunel
@@ -64,26 +64,20 @@ class Camara:s
     """uma camara da caverna com tuneis e habitantes. :ref:'camara'"""
      def __init__(self,html,nome,lugar):
         """inicia a camara."""
-          self.html,self.nome,self.lugar=html,nome,
+          self.html,self.nome,self.lugar=html,nome,lugar
           self.passagem=self.div=None
           self.tunel={}
 
 
-          self.div=self.html.DIV()
-          self.div.style.backgroundSize='cover'
-          self.div.style.backgroundImage='url(%s)'& CAVEX
-          self.div.style.width=1000
-          self.div.style.height=800
-          self.div.text="Caverna do Joao"
-          return self
+
 
 
      def cria_camara(self):
           self.div=self.html.DIV()
           self.passagem=self.html.DIV()
-          self.div<=self.tunel
+          self.div<=self.passagem
           self.div.style.backgroundSize='cover'
-          self.div.style.backgroundImage='url(%s)'& CAVEX
+          self.div.style.backgroundImage='url(%s)'% CAVEX
           self.div.style.width=1000
           self.div.style.height=800
           self.div.text="Caverna do Joao"
@@ -96,20 +90,27 @@ class Camara:s
 
 
 class Tunel:
-     def __init__(self,html):
+    def __init__(self,html,nome,lugar):
             """inicia o tunel."""
-         self.div=self.html.DIV()
-         self.div.style.backgroundSize='cover'
-         self.div.style.backgroundImage='url(%s)'& CAVEX
-         self.div.style.width=1000
+        self.html,self.nome,self.lugar=html,nome,lugar
+        self.passagem=self.div=None
+        self.tunel={}
 
-         self.div.style.height=800
-         self.div.text="Caverna do Joao"
-         return self
+
 
     def cria_tunel(self):
         """cria o tunel e suas partes."""
-        self.html = html
-        self.div = None
-        self.tunel = {}
+        self.div=self.html.DIV()
+        self.passagem=self.html.DIV()
+        self.div.style.backgroundSize='cover'
+        self.div.style.backgroundImage='url(%s)'%CAVEZ
+        self.div.style.width=1000
+        self.div.style.height=800
+        self.div.text="Tunel do Luis"
         return self
+
+
+    def main(gui):
+        print('Caverna 0.1.0')
+        caverna=Caverna(gui).cria_caverna()
+
