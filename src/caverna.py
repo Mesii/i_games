@@ -11,18 +11,17 @@ Caverna - Principal
 :Home: `Labase <http://labase.selfip.org/>`__
 :Copyright: 2013, `GPL <http://is.gd/3Udt>`__.
 
-Caverna eh um jogo de aventuras em uma caverna.
+Caverna é um jogo de aventuras em uma caverna.
 """
-
 CAVEX = "https://dl.dropboxusercontent.com/u/1751704/labase/caverna/img/cavernax.jpg"
 CAVEZ = "https://dl.dropboxusercontent.com/u/1751704/labase/caverna/img/cavernaz.jpg"
 
 
 class Caverna:
     """Uma caverna com cameras tuneis e habitantes. :ref:`caverna`
-    """
+"""
     def __init__(self, gui):
-        """Initializes builder and gui."""
+        """Initializes builder and gui. """
         self.doc = gui.DOC
         self.html = gui.HTML
         self.camera = {}
@@ -41,34 +40,35 @@ class Caverna:
     def cria_caverna(self):
         """Cria a caverna e suas partes."""
         self.camara = Camara(self.html, "Camara0", self).cria_camara()
-        #criando uma coleção de tuneis
         self.sala = self.camara
+        # criando uma colecao de tuneis
 
         self.tunel = {
             'tunel_%d' % a:
-             Tunel(self.html, "tunel_%d" % a, self.camara, self.camara.passagem, self).cria_tunel()
-             for a in range(0, 3)
+            Tunel(self.html, "tunel_%d" % a, self.camara, self.camara.passagem, self).cria_tunel()
+            for a in range(0, 3)
         }
         return self
 
-class Camara:
 
-    """uma camara da caverna com tuneis e habitantes. :ref:'camara'
-    """
+class Camara:
+    """Uma camara de caverna com tuneis e habitantes. :ref:'camara'
+"""
     def __init__(self, html, nome, lugar):
-        """inicia a camara."""
+        """Inicia a camara. """
         self.html, self.nome, self.lugar = html, nome, lugar
         self.passagem = self.div = None
-        self.tunel = {}
+        self.tunel = ()
 
     def cria_camara(self):
-        self.div = self.html.DIV(Id=self.nome)
+        """Cria a camara e suas partes."""
+        self.div = self.html. DIV(Id=self.nome)
         self.passagem = self.html.DIV(Id='passa_'+self.nome)
         self.div.style.backgroundSize = 'cover'
-        self.div.backgroundImage = 'url (%s)' % CAVEX
+        self.div.style.backgroundImage = 'url(%s)' % CAVEX
         self.div.style.width = 1000
         self.div.style.height = 800
-        self.div.text = "Caverna do Joao"
+        self.div.text = "Caverna do João"
         self.div <= self.passagem
         self.lugar.main <= self.div
         return self
@@ -76,25 +76,38 @@ class Camara:
 
 class Tunel:
     """Um tunel da caverna que liga camaras. :ref:'tunel'
-    """
+"""
     def __init__(self, html, nome, lugar, saida, caverna):
-            """inicia o tunel."""
-            self.html, self.nome, self.caverna = html, nome, caverna
-            self.lugar, self.saida = lugar, saida
-            self.entrada = self.passagem = self.div = None
-            self.camara = {}
+        """Inicia o tunel. """
+        self.html, self.nome, self.caverna = html, nome, caverna
+        self.lugar, self.saida = lugar, saida
+        self.entrada_camara = self.entrada = self.passagem = self.div = None
+        self.camara = ()
 
     def movimenta(self, ev):
-        print(ev.target.Id)
-        #self.caverna.movimenta(self)
-        self.caverna.main <= self.div
+        print('movimenta', ev.target.Id, self.div)
+        self.caverna.movimenta(self)
 
-    def sai_tunel(self):
-        """cria uma saida deste tunel"""
-        self.div = self.html.DIV(Id=self.nome)
+    def sai_tunel(self, ev):
+        print(ev.target.Id, self.lugar)
+        self.caverna.movimenta(self.lugar)
+
+    def cria_saida(self):
+        """Cria uma saida deste tunel"""
+        estilo = dict(
+            width="50%", height=300, Float='left')
+        self.entrada_camara = self.html.DIV(
+            Id='entra_'+self.nome, style=estilo
+        )
+        self.entrada_camara.onclick = self.sai_tunel
+        self.passagem <= self.entrada_camara
+
+    def cria_tunel(self):
+        """Cria o tunel e suas partes."""
+        self.div = self.html. DIV(Id=self.nome)
         self.passagem = self.html.DIV(Id='passa_'+self.nome)
         estilo = dict(
-            width="33.33", heigth=300, float='left')
+            width="33.33%", height=300, Float='left')
         self.entrada = self.html.DIV(
             Id='entra_'+self.nome, style=estilo
         )
@@ -102,12 +115,14 @@ class Tunel:
         self.saida <= self.entrada
         self.div.style.backgroundSize = 'cover'
         self.div.style.backgroundImage = 'url(%s)' % CAVEZ
-        self.div.style.width=1000
-        self.div.style.height=800
+        self.div.style.width = 1000
+        self.div.style.height = 800
         self.div.text = "Caverna do João"
+        self.div <= self.passagem
+        self.cria_saida()
         return self
 
-    def main(gui):
-        print('Caverna 0.1.0')
-        Caverna(gui).cria_caverna()
 
+def main(gui):
+    print('Caverna 0.1.0')
+    Caverna(gui).cria_caverna()
